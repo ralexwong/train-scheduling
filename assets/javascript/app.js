@@ -1,5 +1,21 @@
 $(document).ready(function () {
 
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyCyaFkzE1aRDV--y1Bw7N6JfqDT0nfwNS4",
+        authDomain: "train-scheduling-7a438.firebaseapp.com",
+        databaseURL: "https://train-scheduling-7a438.firebaseio.com",
+        projectId: "train-scheduling-7a438",
+        storageBucket: "train-scheduling-7a438.appspot.com",
+        messagingSenderId: "1016778049156",
+        appId: "1:1016778049156:web:d07e6765016a1d07"
+    };
+
+    firebase.initializeApp(config);
+
+    // Create a variable to reference the database.
+    var database = firebase.database();
+
     // Initial Values
     var trainName = "";
     var destination = "";
@@ -22,78 +38,58 @@ $(document).ready(function () {
         console.log("startTime: " + startTime);
         console.log("frequency: " + frequency);
 
+        // push information into firebase
+        database.ref().push({
+            trainName: trainName,
+            destination: destination,
+            startTime: startTime,
+            frequency: frequency
+        });
+
     });
 
+    // Firebase watcher .on("child_added")
+    database.ref().on("child_added", function(snapshot) {
+
+        // console logging the last user's data
+        console.log(snapshot.val());
+
+        var randomDate = snapshot.val().startTime;
+        console.log(randomDate);
 
 
+        var monthsWorked = moment().diff(moment(randomDate, "X"), "months");
+        var frequency = snapshot.val().frequency;
+        console.log('frequency: ' + frequency);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // // Firebase watcher .on("child_added"
-    // database.ref().on("child_added", function(snapshot) {
-
-    //     // console logging the last user's data
-    //     console.log(snapshot.val());
-
-    //     var randomDate = snapshot.val().startDate;
-    //     console.log(randomDate);
-
-
-    //     var monthsWorked = moment().diff(moment(randomDate, "X"), "months");
-    //     var monthlyRate = snapshot.val().monthlyRate;
-    //     console.log('Monthlyrate' + monthlyRate);
+        var minutesAway = (frequency * monthsWorked);
       
+        var newRow = $("<div class='row'>");
 
-    //     var ENameDiv = $("<div>").text(snapshot.val().trainName);
-    //     var destanationDiv = $("<div>").text(snapshot.val().destanation);
-    //     var startDateDiv = $("<div>").text(snapshot.val().startDate);
-    //     var monthlyRateDiv = $("<div>").text(snapshot.val().monthlyRate);
-    //     var monthsWorkedDiv = $("<div>").text(monthsWorked);
-    //     var totalBilled = (monthlyRate * monthsWorked);
+        var trainNameDiv = $("<div class='col-2'>").text(snapshot.val().trainName);
+        var destinationDiv = $("<div class='col-2'>").text(snapshot.val().destination);
+        var frequencyDiv = $("<div class='col-2'>").text(snapshot.val().frequency);
+        var nextArrivalDiv = $("<div class='col-2'>").text();
+        var minutesAwayDiv = $("<div class='col-2'>").text();
+
+        $("#new-train").append("<hr>");
+        newRow.append(trainNameDiv);
+        newRow.append(destinationDiv);
+        newRow.append(frequencyDiv);
+        newRow.append(nextArrivalDiv);
+        newRow.append(minutesAwayDiv);
+
+        $("#new-train").append(newRow);
+
         
         
-
-    //     ENameDiv.addClass("newEmployees");
-    //     roleDiv.addClass("newRole");
-    //     startDateDiv.addClass("NewStartDate");
-    //     monthlyRateDiv.addClass("NewMonthlyRate");
-    //     monthsWorkedDiv.addClass("NewMonthsWorked");
-
-        
-        
-    //     // grab information from firebase and append the info to each respective column
-
-    //     $("#EName").append(ENameDiv);
-    //     $("#role").append(roleDiv);
-    //     $("#startDate").append(startDateDiv);
-    //     $("#monthlyRate").append(monthlyRateDiv);
-    //     $("#monthsWorked").append(monthsWorkedDiv);
-    //     $("#totalBilled").append(totalBilled);
+        // grab information from firebase and append the info to each respective column
 
     
-    //     // Handle the errors
-    //     }, function(errorObject) {
-    //     console.log("Errors handled: " + errorObject.code);
-    // });
+        // Handle the errors
+        }, function(errorObject) {
+        console.log("Errors handled: " + errorObject.code);
+    });
 
 
 
