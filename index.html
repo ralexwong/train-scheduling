@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Train Scheduling</title>
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+
+<!-- CSS file linked -->
+<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+
+</head>
+
+<body>
+
+<div id="container">
+    <!--Jumbotron-->
+    <div class="jumbotron" id="jumbotron">
+        <h1 class="text-center">Train Scheduling</h1>
+        <h3 class="text-center">One Train Away</h3>
+    </div>
+
+    <div class="card bg-light mb-3" id="card1">
+        <div class="card-header" id="current-train-card"> Current Train Schedule </div>
+        <div class="card-body" id="new-train">
+            <div class="row" id="initialRow">
+                <div class="col-2 CET">Train Name</div>
+                <div class="col-2 CET">Destination</div>
+                <div class="col-2 CET">Frequency (min)</div>
+                <div class="col-2 CET">Next Arrival</div>
+                <div class="col-2 CET">Minutes Away</div>
+            </div>
+            <hr>
+
+            <div class="row">
+                <div class="col-2" id="trainName"></div>
+                <div class="col-2" id="destination"></div>
+                <div class="col-2" id="frequency"></div>
+                <div class="col-2" id="nextArrival"></div>
+                <div class="col-2" id="minutesAway"></div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="card bg-light mb-3" id="card2">
+        <div class="card-header" id="card-add-train"> Add Train </div>
+        <div class="card-body">
+            <div class="form-group">
+                <label for="exampleInputEmail1" class="font-weight-bold">Train Name</label>
+                <input type="name" class="form-control" id="trainName-input" placeholder="">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1" class="font-weight-bold">Destination</label>
+                <input type="name" class="form-control" id="destination-input" placeholder="">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1" class="font-weight-bold">First Train Time (HH:MM - Military Time)
+                </label>
+                <input type="time" class="form-control" id="startTime-input" placeholder="">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1" class="font-weight-bold">Frequency (min)</label>
+                <input type="number" class="form-control" id="frequency-input" placeholder="">
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="submit-button">Submit</button>
+
+</div>
+
+</body>
+
+<script src="assets/javascript/app.js">
+</script>
+
+</html>
