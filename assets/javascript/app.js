@@ -43,7 +43,7 @@ $(document).ready(function () {
             trainName: trainName,
             destination: destination,
             startTime: startTime,
-            frequency: frequency
+            frequency: frequency,
         });
 
     });
@@ -54,23 +54,48 @@ $(document).ready(function () {
         // console logging the last user's data
         console.log(snapshot.val());
 
+        // grab the startTime value from firebase
         var randomDate = snapshot.val().startTime;
         console.log(randomDate);
 
+        // seperate the hours and minutes
+        var currentHours = moment().format("HH");
+        var currentMinutes = moment().format("mm");
 
-        var monthsWorked = moment().diff(moment(randomDate, "X"), "months");
-        var frequency = snapshot.val().frequency;
-        console.log('frequency: ' + frequency);
+        // split the hours and minutes
+        var res = randomDate.split(":");
 
-        var minutesAway = (frequency * monthsWorked);
-      
+        // convert the hours and minute strings to numbers
+        var firstTrainHours = parseInt(res[0]);
+        var firstTrainMinutes = parseInt(res[1]);
+
+        // convert both the first train and current time into minutes
+        var firstTrainHoursToMinutes = (firstTrainHours * 60) + firstTrainMinutes;
+        var currentTrainHoursToMinutes = (parseInt(currentHours) * 60) + parseInt(currentMinutes);
+
+        // figure out the difference
+        var diff = Math.abs(currentTrainHoursToMinutes - firstTrainHoursToMinutes);
+
+        // figure out the minutes away
+        var almostMinutesAway = diff % snapshot.val().frequency;
+        var minutesAway = snapshot.val().frequency - almostMinutesAway;
+
+        console.log(minutesAway);
+
+
+        // add the minutesaway to the current time
+        var nextArrival = moment.utc(moment().format("HH mm"),'hh:mm').add(minutesAway,'minutes').format('hh:mm')
+
+        console.log(nextArrival);
+
+        // create new rows and append respetive valyes into column divs
         var newRow = $("<div class='row'>");
 
         var trainNameDiv = $("<div class='col-2'>").text(snapshot.val().trainName);
         var destinationDiv = $("<div class='col-2'>").text(snapshot.val().destination);
         var frequencyDiv = $("<div class='col-2'>").text(snapshot.val().frequency);
-        var nextArrivalDiv = $("<div class='col-2'>").text();
-        var minutesAwayDiv = $("<div class='col-2'>").text();
+        var nextArrivalDiv = $("<div class='col-2'>").text(nextArrival);
+        var minutesAwayDiv = $("<div class='col-2'>").text(minutesAway);
 
         $("#new-train").append("<hr>");
         newRow.append(trainNameDiv);
